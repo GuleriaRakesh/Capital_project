@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import HomeStyles from "./Home.style";
 import {
   AppBar,
   Box,
+  Button,
   createTheme,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
   Link,
   SelectChangeEvent,
+  TextField,
   ThemeProvider,
   Toolbar,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-
+import EditIcon from '@mui/icons-material/Edit';
+import DoneIcon from '@mui/icons-material/Done';
 interface State {
   amount: string;
   expenses: string;
@@ -29,97 +38,87 @@ const darkTheme = createTheme({
 });
 
 export default function HomePage() {
-  const [percentage, setPercentage] = React.useState("");
-  const [values, setValues] = React.useState<State>({
-    amount: "",
-    expenses: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
-  const handleChange = (event: SelectChangeEvent) => {
-    setPercentage(event.target.value as string);
-  };
-  const handleChangeCurrency =
-    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  const [rowValues, setRowValues] = React.useState<any>([{
+    id: 1,
+    expenses: 1000,
+    amount_received: 10000,
+    how_amount_received: "By cheque",
+    notes: {
+      amount_note: "Recieved Successfully",
+      expense_note: "Not Expense",
+      loa_note: "Full Amount recieved",
+      pr_note: "None recieved",
+    },
+    dates: {
+      amount_note: "16/08/2022",
+      expense_note: "17/08/2022",
+      loan_date: "10/08/2022",
+    },
+    LOA_amount: "$90,000",
+    LOA_percent: "20%",
+    PR_amount: "$500",
+    loan_id: 123456,
+    borrower_name: "Rakesh Kumar",
+    Loan_officer_name: "James",
+  }]);
+  const [isShownAmount, setIsShownAmount] = useState<boolean>(false);
+  const [isShownExpense, setIsShownExpense] = useState<boolean>(false);
+  const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [amount, setAmount] = useState<number>(0)
 
-  const rows = [
-    {
-      id: 1,
-      expenses: "$50,000",
-      amount_received: "$500,000",
-      how_amount_received: "By cheque",
-      notes: {
-        amount_note: "Recieved Successfully",
-        expense_note: "Not Expense",
-        loa_note: "Full Amount recieved",
-        pr_note: "None recieved",
-      },
-      dates: {
-        amount_note: "16/08/2022",
-        expense_note: "16/08/2022",
-      },
-      LOA_amount: "$90,000",
-      LOA_percent: "20%",
-      PR_amount: "$500",
-    },
-    {
-      id: 2,
-      expenses: "$20,000",
-      amount_received: "$100,000",
-      how_amount_received: "By cheque",
-      notes: {
-        amount_note: "Recieved Successfully",
-        expense_note: "Not Expense",
-        loa_note: "Full Amount recieved",
-        pr_note: "None recieved",
-      },
-      dates: {
-        amount_note: "16/08/2022",
-        expense_note: "16/08/2022",
-      },
-      LOA_amount: "$24,000",
-      LOA_percent: "30%",
-      PR_amount: "$100",
-    },
-    {
-      id: 3,
-      expenses: "$150,000",
-      amount_received: "$1,000,000",
-      how_amount_received: "By cheque",
-      notes: {
-        amount_note: "Recieved Successfully",
-        expense_note: "Not Expense",
-        loa_note: "Full Amount recieved",
-        pr_note: "None recieved",
-      },
-      dates: {
-        amount_note: "16/08/2022",
-        expense_note: "16/08/2022",
-      },
-      LOA_amount: "$425,000",
-      LOA_percent: "50%",
-      PR_amount: "$5000",
-    },
-  ];
+  const handleEditValues = (id: number, type: string) => {
+    const objIndex = rowValues.findIndex((value: any) => value.id === id);
+    if (objIndex > -1) {
+      if (type === 'total_amount') {
+        rowValues[0]['amount_received'] = amount;
+      }
+      else {
+        rowValues[0]['expenses'] = amount;
+      }
+    }
+  }
+
   const columns: GridColDef[] = [
     {
       field: "id",
       headerName: "ID",
-      flex: 1,
       headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "loan_details",
+      headerName: "Loan Details",
+      flex: 1,
+      sortable: false,
+      align: "left",
+      headerClassName: "super-app-theme--header",
+      renderCell: (params) => {
+        return (
+          <>
+            <Box
+              className="name_main"
+              style={{ cursor: "pointer", display: "flex" }}
+            >
+              <Box>
+                <Box>
+                  Loan ID : <Link href="#"> {params.row.loan_id}</Link>
+                </Box>
+                <Box>Borrower Name : {params.row.borrower_name}</Box>
+                <Box> Loan Officer Name : {params.row.Loan_officer_name}</Box>
+                <Box>Date Closed : {params.row.dates.loan_date}</Box>
+              </Box>
+            </Box>
+          </>
+        );
+      },
     },
     {
       field: "amount_received",
-      headerName: "Amount Received from Bank",
+      headerName: "Amount received from bank",
       flex: 1,
       sortable: false,
       align: "left",
       headerClassName: "super-app-theme--header",
       renderCell: (params) => {
-        console.log("params");
         return (
           <>
             <Box
@@ -127,97 +126,68 @@ export default function HomePage() {
               style={{ cursor: "pointer", display: "flex" }}
             >
               <Box>
-                <Box>
-                  Amount : <Link href="#"> {params.row.amount_received}</Link>
+                <Box
+                  // onMouseEnter={() => setIsShown(true)}
+                  // onMouseLeave={() => setIsShown(false)}
+                  onMouseOver={() => setIsShownAmount(true)}
+                >
+                  Total Amount :{" "}
+                  $ {params.row.amount_received}
                 </Box>
+                <Box onMouseOver={() => setIsShownExpense(true)}>Expenses : $ {params.row.expenses}</Box>
                 <Box>
-                  How it was received : {params.row.how_amount_received}
+                  {" "}
+                  Net Amount :${" "}
+                  {params.row.amount_received - params.row.expenses}
                 </Box>
-                <Box> Note : {params.row.notes.amount_note}</Box>
-                <Box>date : {params.row.dates.amount_note}</Box>
               </Box>
             </Box>
-          </>
-        );
-      },
-    },
-    {
-      field: "expenses",
-      headerName: "Expenses",
-      flex: 1,
-      sortable: false,
-      align: "left",
-      headerClassName: "super-app-theme--header",
-      renderCell: (params) => {
-        console.log("params");
-        return (
-          <>
-            <Box
-              className="name_main"
-              style={{ cursor: "pointer", display: "flex" }}
+            <Dialog
+              open={isShownAmount}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
             >
-              <Box>
-                <Box>
-                  Amount : <Link href="#">{params.row.expenses}</Link>
-                </Box>
-                <Box>How it was paid : {params.row.notes.expense_note}</Box>
-                <Box> Note : {params.row.notes.expense_note}</Box>
-                <Box>date : {params.row.dates.expense_note}</Box>
-              </Box>
-            </Box>
-          </>
-        );
-      },
-    },
-    {
-      field: "LOA_amount",
-      headerName: "Loan officer Amount",
-      sortable: false,
-      flex: 1,
-      align: "left",
-      headerClassName: "super-app-theme--header",
-      renderCell: (params) => {
-        console.log("params");
-        return (
-          <>
-            <Box
-              className="name_main"
-              style={{ cursor: "pointer", display: "flex" }}
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  <Box>
+                    <Box>
+                      Amount :
+                      <TextField
+                        onChange={(e) => setAmount(+e.target.value)}
+                        defaultValue={params.row.amount_received}
+                        disabled={isEditable ? false : true} />
+                      <IconButton>{isEditable ? <DoneIcon onClick={() => handleEditValues(params.row.id, 'total_amount')} /> : <EditIcon onClick={() => setIsEditable(true)} />}</IconButton>
+                    </Box>
+                    <Box> Note : {params.row.notes.amount_note}</Box>
+                    <Box>date : {params.row.dates.amount_note}</Box>
+                  </Box>
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => { setIsShownAmount(false); setIsEditable(false) }}>Close</Button>
+              </DialogActions>
+            </Dialog>
+
+            <Dialog
+              open={isShownExpense}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
             >
-              <Box>
+              <DialogContent>
                 <Box>
-                  Amount : <Link href="#">{params.row.LOA_amount}</Link>
+                  <Box>
+                    Amount :
+                    <TextField onChange={(e) => setAmount(+e.target.value)} defaultValue={params.row.expenses} disabled={isEditable ? false : true} />
+                    <IconButton>{isEditable ? <DoneIcon onClick={() => handleEditValues(params.row.id, 'expense')} /> : <EditIcon onClick={() => setIsEditable(true)} />}</IconButton>
+                  </Box>
+                  <Box> Note : {params.row.notes.expense_note}</Box>
+                  <Box>date : {params.row.dates.expense_note}</Box>
                 </Box>
-                <Box>Percentage : {params.row.LOA_percent}</Box>
-                <Box> Note : {params.row.notes.loa_note}</Box>
-              </Box>
-            </Box>
-          </>
-        );
-      },
-    },
-    {
-      field: "PR_amount",
-      headerName: "Processor Amount",
-      sortable: false,
-      flex: 1,
-      align: "left",
-      headerClassName: "super-app-theme--header",
-      renderCell: (params) => {
-        console.log("params");
-        return (
-          <>
-            <Box
-              className="name_main"
-              style={{ cursor: "pointer", display: "flex" }}
-            >
-              <Box>
-                <Box>
-                  Amount : <Link href="#">{params.row.PR_amount}</Link>
-                </Box>
-                <Box> Note : {params.row.notes.pr_note}</Box>
-              </Box>
-            </Box>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => { setIsShownExpense(false); setIsEditable(false) }}>Close</Button>
+              </DialogActions>
+            </Dialog>
           </>
         );
       },
@@ -246,7 +216,7 @@ export default function HomePage() {
           }}
         >
           <DataGrid
-            rows={rows}
+            rows={rowValues}
             columns={columns}
             pageSize={5}
             disableColumnFilter={true}
