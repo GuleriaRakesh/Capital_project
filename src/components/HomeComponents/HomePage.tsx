@@ -167,7 +167,7 @@ export default function HomePage() {
             >
               <Box>
                 <Box sx={{ display: "flex" }}>
-                  <Box>Total Amount : </Box>
+                  <Box>Total Amount : ${" "}</Box>
                   <Box
                     sx={{ color: "#805ad8" }}
                     onMouseOver={() => {
@@ -175,11 +175,11 @@ export default function HomePage() {
                       setDialogContent(params.row);
                     }}
                   >
-                    $ {params.row.amount_received}
+                    {params.row.amount_received}
                   </Box>
                 </Box>
                 <Box sx={{ display: "flex" }}>
-                  <Box>Expenses :</Box>
+                  <Box>Expenses : ${" "}</Box>
                   <Box
                     sx={{ color: "#d55ad8" }}
                     onMouseOver={() => {
@@ -187,12 +187,12 @@ export default function HomePage() {
                       setDialogContent(params.row);
                     }}
                   >
-                    $ {params.row.expenses}
+                    {params.row.expenses}
                   </Box>
                 </Box>
                 <Box sx={{ display: "flex" }}>
                   {" "}
-                  <Box>Net Amount :${" "}</Box>
+                  <Box>Net Amount : ${" "}</Box>
                   <Box sx={{ color: "#31a534" }}>{params.row.amount_received - params.row.expenses}
                   </Box>
                 </Box>
