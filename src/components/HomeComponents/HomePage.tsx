@@ -38,42 +38,82 @@ const darkTheme = createTheme({
 });
 
 export default function HomePage() {
-  const [rowValues, setRowValues] = React.useState<any>([{
-    id: 1,
-    expenses: 1000,
-    amount_received: 10000,
-    how_amount_received: "By cheque",
-    notes: {
-      amount_note: "Recieved Successfully",
-      expense_note: "Not Expense",
-      loa_note: "Full Amount recieved",
-      pr_note: "None recieved",
+  const [rowValues, setRowValues] = React.useState<any>([
+    {
+      id: 1,
+      expenses: 1000,
+      amount_received: 10000,
+      how_amount_received: "By cheque",
+      notes: {
+        amount_note: "Recieved Successfully",
+        expense_note: "Not Expense",
+        loa_note: "Full Amount recieved",
+        pr_note: "None recieved",
+      },
+      dates: {
+        amount_note: "16/08/2022",
+        expense_note: "17/08/2022",
+        loan_date: "10/08/2022",
+      },
+      loan_id: 123456,
+      borrower_name: "Rakesh Kumar",
+      Loan_officer_name: "James",
     },
-    dates: {
-      amount_note: "16/08/2022",
-      expense_note: "17/08/2022",
-      loan_date: "10/08/2022",
+    {
+      id: 2,
+      expenses: 200,
+      amount_received: 2000,
+      how_amount_received: "By cheque",
+      notes: {
+        amount_note: "Recieved Successfully",
+        expense_note: "Not Expense",
+        loa_note: "Full Amount recieved",
+        pr_note: "None recieved",
+      },
+      dates: {
+        amount_note: "06/08/2022",
+        expense_note: "07/08/2022",
+        loan_date: "01/08/2022",
+      },
+      loan_id: 123456,
+      borrower_name: "Rakesh Kumar",
+      Loan_officer_name: "James",
     },
-    LOA_amount: "$90,000",
-    LOA_percent: "20%",
-    PR_amount: "$500",
-    loan_id: 123456,
-    borrower_name: "Rakesh Kumar",
-    Loan_officer_name: "James",
-  }]);
+    {
+      id: 3,
+      expenses: 3000,
+      amount_received: 300000,
+      how_amount_received: "By cheque",
+      notes: {
+        amount_note: "Recieved Successfully",
+        expense_note: "Not Expense",
+        loa_note: "Full Amount recieved",
+        pr_note: "None recieved",
+      },
+      dates: {
+        amount_note: "16/08/2022",
+        expense_note: "17/08/2022",
+        loan_date: "10/08/2022",
+      },
+      loan_id: 123456,
+      borrower_name: "Rakesh Kumar",
+      Loan_officer_name: "James",
+    }
+  ]);
   const [isShownAmount, setIsShownAmount] = useState<boolean>(false);
   const [isShownExpense, setIsShownExpense] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number>(0)
+  const [amount, setAmount] = useState<number>(0);
+  const [dialogContent, setDialogContent] = useState<any>()
 
   const handleEditValues = (id: number, type: string) => {
     const objIndex = rowValues.findIndex((value: any) => value.id === id);
     if (objIndex > -1) {
       if (type === 'total_amount') {
-        rowValues[0]['amount_received'] = amount;
+        rowValues[objIndex]['amount_received'] = amount;
       }
       else {
-        rowValues[0]['expenses'] = amount;
+        rowValues[objIndex]['expenses'] = amount;
       }
     }
   }
@@ -129,12 +169,12 @@ export default function HomePage() {
                 <Box
                   // onMouseEnter={() => setIsShown(true)}
                   // onMouseLeave={() => setIsShown(false)}
-                  onMouseOver={() => setIsShownAmount(true)}
+                  onMouseOver={() => { setIsShownAmount(true); setDialogContent(params.row) }}
                 >
                   Total Amount :{" "}
                   $ {params.row.amount_received}
                 </Box>
-                <Box onMouseOver={() => setIsShownExpense(true)}>Expenses : $ {params.row.expenses}</Box>
+                <Box onMouseOver={() => { setIsShownExpense(true); setDialogContent(params.row) }}>Expenses : $ {params.row.expenses}</Box>
                 <Box>
                   {" "}
                   Net Amount :${" "}
@@ -148,20 +188,18 @@ export default function HomePage() {
               aria-describedby="alert-dialog-description"
             >
               <DialogContent>
-                <DialogContentText id="alert-dialog-description">
+                <Box>
                   <Box>
-                    <Box>
-                      Amount :
-                      <TextField
-                        onChange={(e) => setAmount(+e.target.value)}
-                        defaultValue={params.row.amount_received}
-                        disabled={isEditable ? false : true} />
-                      <IconButton>{isEditable ? <DoneIcon onClick={() => handleEditValues(params.row.id, 'total_amount')} /> : <EditIcon onClick={() => setIsEditable(true)} />}</IconButton>
-                    </Box>
-                    <Box> Note : {params.row.notes.amount_note}</Box>
-                    <Box>date : {params.row.dates.amount_note}</Box>
+                    Amount :
+                    <TextField
+                      onChange={(e) => setAmount(+e.target.value)}
+                      defaultValue={dialogContent?.amount_received}
+                      disabled={isEditable ? false : true} />
+                    <IconButton>{isEditable ? <DoneIcon onClick={() => handleEditValues(dialogContent?.id, 'total_amount')} /> : <EditIcon onClick={() => setIsEditable(true)} />}</IconButton>
                   </Box>
-                </DialogContentText>
+                  <Box> Note : {dialogContent?.notes.amount_note}</Box>
+                  <Box>date : {dialogContent?.dates.amount_note}</Box>
+                </Box>
               </DialogContent>
               <DialogActions>
                 <Button onClick={() => { setIsShownAmount(false); setIsEditable(false) }}>Close</Button>
@@ -177,11 +215,11 @@ export default function HomePage() {
                 <Box>
                   <Box>
                     Amount :
-                    <TextField onChange={(e) => setAmount(+e.target.value)} defaultValue={params.row.expenses} disabled={isEditable ? false : true} />
-                    <IconButton>{isEditable ? <DoneIcon onClick={() => handleEditValues(params.row.id, 'expense')} /> : <EditIcon onClick={() => setIsEditable(true)} />}</IconButton>
+                    <TextField onChange={(e) => setAmount(+e.target.value)} defaultValue={dialogContent?.expenses} disabled={isEditable ? false : true} />
+                    <IconButton>{isEditable ? <DoneIcon onClick={() => handleEditValues(dialogContent?.id, 'expense')} /> : <EditIcon onClick={() => setIsEditable(true)} />}</IconButton>
                   </Box>
-                  <Box> Note : {params.row.notes.expense_note}</Box>
-                  <Box>date : {params.row.dates.expense_note}</Box>
+                  <Box> Note : {dialogContent?.notes.expense_note}</Box>
+                  <Box>date : {dialogContent?.dates.expense_note}</Box>
                 </Box>
               </DialogContent>
               <DialogActions>
