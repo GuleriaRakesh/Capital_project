@@ -18,8 +18,9 @@ import {
   Toolbar,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import EditIcon from '@mui/icons-material/Edit';
-import DoneIcon from '@mui/icons-material/Done';
+import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
+import { display } from "@mui/system";
 interface State {
   amount: string;
   expenses: string;
@@ -98,25 +99,24 @@ export default function HomePage() {
       loan_id: 123456,
       borrower_name: "Rakesh Kumar",
       Loan_officer_name: "James",
-    }
+    },
   ]);
   const [isShownAmount, setIsShownAmount] = useState<boolean>(false);
   const [isShownExpense, setIsShownExpense] = useState<boolean>(false);
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(0);
-  const [dialogContent, setDialogContent] = useState<any>()
+  const [dialogContent, setDialogContent] = useState<any>();
 
   const handleEditValues = (id: number, type: string) => {
     const objIndex = rowValues.findIndex((value: any) => value.id === id);
     if (objIndex > -1) {
-      if (type === 'total_amount') {
-        rowValues[objIndex]['amount_received'] = amount;
-      }
-      else {
-        rowValues[objIndex]['expenses'] = amount;
+      if (type === "total_amount") {
+        rowValues[objIndex]["amount_received"] = amount;
+      } else {
+        rowValues[objIndex]["expenses"] = amount;
       }
     }
-  }
+  };
 
   const columns: GridColDef[] = [
     {
@@ -166,19 +166,35 @@ export default function HomePage() {
               style={{ cursor: "pointer", display: "flex" }}
             >
               <Box>
-                <Box
-                  // onMouseEnter={() => setIsShown(true)}
-                  // onMouseLeave={() => setIsShown(false)}
-                  onMouseOver={() => { setIsShownAmount(true); setDialogContent(params.row) }}
-                >
-                  Total Amount :{" "}
-                  $ {params.row.amount_received}
+                <Box sx={{ display: "flex" }}>
+                  <Box>Total Amount : </Box>
+                  <Box
+                    sx={{ color: "#805ad8" }}
+                    onMouseOver={() => {
+                      setIsShownAmount(true);
+                      setDialogContent(params.row);
+                    }}
+                  >
+                    $ {params.row.amount_received}
+                  </Box>
                 </Box>
-                <Box onMouseOver={() => { setIsShownExpense(true); setDialogContent(params.row) }}>Expenses : $ {params.row.expenses}</Box>
-                <Box>
+                <Box sx={{ display: "flex" }}>
+                  <Box>Expenses :</Box>
+                  <Box
+                    sx={{ color: "#d55ad8" }}
+                    onMouseOver={() => {
+                      setIsShownAmount(true);
+                      setDialogContent(params.row);
+                    }}
+                  >
+                    $ {params.row.expenses}
+                  </Box>
+                </Box>
+                <Box sx={{ display: "flex" }}>
                   {" "}
-                  Net Amount :${" "}
-                  {params.row.amount_received - params.row.expenses}
+                  <Box>Net Amount :${" "}</Box>
+                  <Box sx={{ color: "#31a534" }}>{params.row.amount_received - params.row.expenses}
+                  </Box>
                 </Box>
               </Box>
             </Box>
@@ -194,15 +210,33 @@ export default function HomePage() {
                     <TextField
                       onChange={(e) => setAmount(+e.target.value)}
                       defaultValue={dialogContent?.amount_received}
-                      disabled={isEditable ? false : true} />
-                    <IconButton>{isEditable ? <DoneIcon onClick={() => handleEditValues(dialogContent?.id, 'total_amount')} /> : <EditIcon onClick={() => setIsEditable(true)} />}</IconButton>
+                      disabled={isEditable ? false : true}
+                    />
+                    <IconButton>
+                      {isEditable ? (
+                        <DoneIcon
+                          onClick={() =>
+                            handleEditValues(dialogContent?.id, "total_amount")
+                          }
+                        />
+                      ) : (
+                        <EditIcon onClick={() => setIsEditable(true)} />
+                      )}
+                    </IconButton>
                   </Box>
                   <Box> Note : {dialogContent?.notes.amount_note}</Box>
                   <Box>date : {dialogContent?.dates.amount_note}</Box>
                 </Box>
               </DialogContent>
               <DialogActions>
-                <Button onClick={() => { setIsShownAmount(false); setIsEditable(false) }}>Close</Button>
+                <Button
+                  onClick={() => {
+                    setIsShownAmount(false);
+                    setIsEditable(false);
+                  }}
+                >
+                  Close
+                </Button>
               </DialogActions>
             </Dialog>
 
@@ -215,15 +249,36 @@ export default function HomePage() {
                 <Box>
                   <Box>
                     Amount :
-                    <TextField onChange={(e) => setAmount(+e.target.value)} defaultValue={dialogContent?.expenses} disabled={isEditable ? false : true} />
-                    <IconButton>{isEditable ? <DoneIcon onClick={() => handleEditValues(dialogContent?.id, 'expense')} /> : <EditIcon onClick={() => setIsEditable(true)} />}</IconButton>
+                    <TextField
+                      onChange={(e) => setAmount(+e.target.value)}
+                      defaultValue={dialogContent?.expenses}
+                      disabled={isEditable ? false : true}
+                    />
+                    <IconButton>
+                      {isEditable ? (
+                        <DoneIcon
+                          onClick={() =>
+                            handleEditValues(dialogContent?.id, "expense")
+                          }
+                        />
+                      ) : (
+                        <EditIcon onClick={() => setIsEditable(true)} />
+                      )}
+                    </IconButton>
                   </Box>
                   <Box> Note : {dialogContent?.notes.expense_note}</Box>
                   <Box>date : {dialogContent?.dates.expense_note}</Box>
                 </Box>
               </DialogContent>
               <DialogActions>
-                <Button onClick={() => { setIsShownExpense(false); setIsEditable(false) }}>Close</Button>
+                <Button
+                  onClick={() => {
+                    setIsShownExpense(false);
+                    setIsEditable(false);
+                  }}
+                >
+                  Close
+                </Button>
               </DialogActions>
             </Dialog>
           </>
