@@ -170,7 +170,7 @@ export default function HomePage() {
                 <Box sx={{ display: "flex" }}>
                   <Box>Total Amount : $ </Box>
                   <Box
-                    className="dilogcus"
+                    className=""
                     sx={{ color: "#805ad8" }}
                     onMouseOver={() => {
                       setDialogContent(params.row);
@@ -188,7 +188,7 @@ export default function HomePage() {
                   <Box>Expenses : $ </Box>
                   <Box
                     sx={{ color: "#d55ad8" }}
-                    className="dilogcus"
+                    className=""
                     onMouseOver={() => {
                       setDialogContent(params.row);
                       setDialogType("expenses");

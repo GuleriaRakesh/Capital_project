@@ -45,5 +45,30 @@ const HomeStyles = styled.div`
   .css-lz5g83 .super-app-theme--header {
     background: #e3dddd;
   }
+
+  .dilogcus {
+    position: absolute;
+    top: 130px;
+    width: 100%;
+    background: #fff;
+    max-width: 410px;
+    right: 190px;
+    padding: 20px;
+    border: 1px solid #fefefe;
+    box-shadow: 4px 6px 16.2px 1.8px rgb(0 0 0 / 9%);
+    button.MuiButtonBase-root {
+      text-align: center;
+      background-color: var(--purple);
+      border: 1px solid var(--purple);
+      padding: 0.6rem 1.5rem;
+      color: #fff;
+      border-radius: 0.358rem;
+      transition: 0.3s ease all;
+      margin-left: 10px;
+      svg.MuiSvgIcon-root {
+        color: #fff;
+      }
+    }
+  }
 `;
 export default HomeStyles;

@@ -23,7 +23,15 @@ const Tabledialog = ({
 }) => {
   return (
     <>
-      <Box className="dilogcus dilogcushide">
+      <Box className="dilogcus dilogcushide"
+        onMouseOver={() => {
+          setIsShownAmount(true);
+        }}
+        onMouseLeave={() => {
+          setIsShownAmount(false);
+
+        }}
+      >
         <TableDialogStyle>
           <Box className="dialogcontent">
             <Box className="amount_content">
@@ -75,14 +83,7 @@ const Tabledialog = ({
             </Box>
           </Box>
 
-          <Button
-            onClick={() => {
-              setIsShownAmount(false);
-              setIsEditable(false);
-            }}
-          >
-            Close
-          </Button>
+
 
         </TableDialogStyle>
       </Box>
