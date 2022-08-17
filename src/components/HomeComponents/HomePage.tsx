@@ -48,8 +48,11 @@ export default function HomePage() {
         loan_date: "10/08/2022",
       },
       loan_id: 123456,
+      loan_amount: 100000,
       borrower_name: "Rakesh Kumar",
       Loan_officer_name: "James",
+      Processor_name: "Thomas",
+      Processor_amount: 200,
     },
     {
       id: 2,
@@ -68,8 +71,11 @@ export default function HomePage() {
         loan_date: "01/08/2022",
       },
       loan_id: 123456,
+      loan_amount: 200000,
       borrower_name: "Rakesh Kumar",
       Loan_officer_name: "James",
+      Processor_name: "Will",
+      Processor_amount: 600,
     },
     {
       id: 3,
@@ -88,8 +94,11 @@ export default function HomePage() {
         loan_date: "10/08/2022",
       },
       loan_id: 123456,
+      loan_amount: 300000,
       borrower_name: "Rakesh Kumar",
       Loan_officer_name: "James",
+      Processor_name: "Jane",
+      Processor_amount: 400,
     },
   ]);
   const [isShownAmount, setIsShownAmount] = useState<boolean>(false);
@@ -157,15 +166,18 @@ export default function HomePage() {
               style={{ cursor: "pointer", display: "flex" }}
             >
               <Box>
+                <Box>Loan Amount : $ {params.row.loan_amount}</Box>
                 <Box sx={{ display: "flex" }}>
                   <Box>Total Amount : $ </Box>
                   <Box
+                    className="myDIV"
                     sx={{ color: "#805ad8" }}
                     onMouseOver={() => {
                       setDialogContent(params.row);
                       setDialogType("amount");
                       setIsShownAmount(true);
                     }}
+                  // onMouseLeave={() => setIsShownAmount(false)}
                   >
                     {params.row.amount_received}
                   </Box>
@@ -174,11 +186,13 @@ export default function HomePage() {
                   <Box>Expenses : $ </Box>
                   <Box
                     sx={{ color: "#d55ad8" }}
+                    className="myDIV"
                     onMouseOver={() => {
                       setDialogContent(params.row);
                       setDialogType("expenses");
                       setIsShownAmount(true);
                     }}
+                  // onMouseLeave={() => setIsShownAmount(false)}
                   >
                     {params.row.expenses}
                   </Box>
@@ -193,6 +207,29 @@ export default function HomePage() {
               </Box>
             </Box>
 
+          </>
+        );
+      },
+    },
+    {
+      field: "processor",
+      headerName: "Processor",
+      flex: 1,
+      sortable: false,
+      align: "left",
+      headerClassName: "super-app-theme--header",
+      renderCell: (params) => {
+        return (
+          <>
+            <Box
+              className="name_main"
+              style={{ cursor: "pointer", display: "flex" }}
+            >
+              <Box>
+                <Box>Amount : ${params.row.Processor_amount}</Box>
+                <Box>Processor Name : {params.row.Processor_name}</Box>
+              </Box>
+            </Box>
           </>
         );
       },
@@ -220,6 +257,16 @@ export default function HomePage() {
             textAlign: "left",
           }}
         >
+          <Tabledialog
+            isShownAmount={isShownAmount}
+            setAmount={setAmount}
+            setIsEditable={setIsEditable}
+            dialogType={dialogType}
+            setIsShownAmount={setIsShownAmount}
+            dialogContent={dialogContent}
+            handleEditValues={handleEditValues}
+            isEditable={isEditable}
+          />
           <DataGrid
             rows={rowValues}
             columns={columns}
@@ -231,16 +278,6 @@ export default function HomePage() {
             rowHeight={100}
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
-          />
-          <Tabledialog
-            isShownAmount={isShownAmount}
-            setAmount={setAmount}
-            setIsEditable={setIsEditable}
-            dialogType={dialogType}
-            setIsShownAmount={setIsShownAmount}
-            dialogContent={dialogContent}
-            handleEditValues={handleEditValues}
-            isEditable={isEditable}
           />
         </Box>
       </div>
