@@ -193,16 +193,6 @@ export default function HomePage() {
               </Box>
             </Box>
 
-            <Tabledialog
-              isShownAmount={isShownAmount}
-              setAmount={setAmount}
-              setIsEditable={setIsEditable}
-              dialogType={dialogType}
-              setIsShownAmount={setIsShownAmount}
-              dialogContent={dialogContent}
-              handleEditValues={handleEditValues}
-              isEditable={isEditable}
-            />
           </>
         );
       },
@@ -241,6 +231,16 @@ export default function HomePage() {
             rowHeight={100}
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
+          />
+          <Tabledialog
+            isShownAmount={isShownAmount}
+            setAmount={setAmount}
+            setIsEditable={setIsEditable}
+            dialogType={dialogType}
+            setIsShownAmount={setIsShownAmount}
+            dialogContent={dialogContent}
+            handleEditValues={handleEditValues}
+            isEditable={isEditable}
           />
         </Box>
       </div>
