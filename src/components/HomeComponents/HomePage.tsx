@@ -170,14 +170,16 @@ export default function HomePage() {
                 <Box sx={{ display: "flex" }}>
                   <Box>Total Amount : $ </Box>
                   <Box
-                    className="myDIV"
+                    className="dilogcus"
                     sx={{ color: "#805ad8" }}
                     onMouseOver={() => {
                       setDialogContent(params.row);
                       setDialogType("amount");
                       setIsShownAmount(true);
                     }}
-                  // onMouseLeave={() => setIsShownAmount(false)}
+                    onMouseLeave={() => {
+                      setIsShownAmount(false);
+                    }}
                   >
                     {params.row.amount_received}
                   </Box>
@@ -186,13 +188,15 @@ export default function HomePage() {
                   <Box>Expenses : $ </Box>
                   <Box
                     sx={{ color: "#d55ad8" }}
-                    className="myDIV"
+                    className="dilogcus"
                     onMouseOver={() => {
                       setDialogContent(params.row);
                       setDialogType("expenses");
                       setIsShownAmount(true);
                     }}
-                  // onMouseLeave={() => setIsShownAmount(false)}
+                    onMouseLeave={() => {
+                      setIsShownAmount(false);
+                    }}
                   >
                     {params.row.expenses}
                   </Box>
@@ -200,7 +204,7 @@ export default function HomePage() {
                 <Box sx={{ display: "flex" }}>
                   {" "}
                   <Box>Net Amount : $ </Box>
-                  <Box sx={{ color: "#31a534" }}>
+                  <Box sx={{ color: "#31a534" }} >
                     {params.row.amount_received - params.row.expenses}
                   </Box>
                 </Box>
@@ -257,16 +261,6 @@ export default function HomePage() {
             textAlign: "left",
           }}
         >
-          <Tabledialog
-            isShownAmount={isShownAmount}
-            setAmount={setAmount}
-            setIsEditable={setIsEditable}
-            dialogType={dialogType}
-            setIsShownAmount={setIsShownAmount}
-            dialogContent={dialogContent}
-            handleEditValues={handleEditValues}
-            isEditable={isEditable}
-          />
           <DataGrid
             rows={rowValues}
             columns={columns}
@@ -279,6 +273,18 @@ export default function HomePage() {
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
           />
+          {isShownAmount &&
+            <Tabledialog
+              isShownAmount={isShownAmount}
+              setAmount={setAmount}
+              setIsEditable={setIsEditable}
+              dialogType={dialogType}
+              setIsShownAmount={setIsShownAmount}
+              dialogContent={dialogContent}
+              handleEditValues={handleEditValues}
+              isEditable={isEditable}
+            />
+          }
         </Box>
       </div>
     </HomeStyles>
