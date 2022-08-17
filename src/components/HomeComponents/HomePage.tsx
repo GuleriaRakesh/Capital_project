@@ -167,7 +167,7 @@ export default function HomePage() {
             >
               <Box>
                 <Box sx={{ display: "flex" }}>
-                  <Box>Total Amount : ${" "}</Box>
+                  <Box>Total Amount : $ </Box>
                   <Box
                     sx={{ color: "#805ad8" }}
                     onMouseOver={() => {
@@ -179,7 +179,7 @@ export default function HomePage() {
                   </Box>
                 </Box>
                 <Box sx={{ display: "flex" }}>
-                  <Box>Expenses : ${" "}</Box>
+                  <Box>Expenses : $ </Box>
                   <Box
                     sx={{ color: "#d55ad8" }}
                     onMouseOver={() => {
@@ -192,20 +192,22 @@ export default function HomePage() {
                 </Box>
                 <Box sx={{ display: "flex" }}>
                   {" "}
-                  <Box>Net Amount : ${" "}</Box>
-                  <Box sx={{ color: "#31a534" }}>{params.row.amount_received - params.row.expenses}
+                  <Box>Net Amount : $ </Box>
+                  <Box sx={{ color: "#31a534" }}>
+                    {params.row.amount_received - params.row.expenses}
                   </Box>
                 </Box>
               </Box>
             </Box>
             <Dialog
+              className="popup_1"
               open={isShownAmount}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogContent>
-                <Box>
-                  <Box>
+              <DialogContent className="popup_1_content">
+                <Box className="dialogcontent">
+                  <Box className="amount_content">
                     Amount :
                     <TextField
                       onChange={(e) => setAmount(+e.target.value)}
@@ -215,17 +217,23 @@ export default function HomePage() {
                     <IconButton>
                       {isEditable ? (
                         <DoneIcon
+                          className="done_Icon"
                           onClick={() =>
                             handleEditValues(dialogContent?.id, "total_amount")
                           }
                         />
                       ) : (
-                        <EditIcon onClick={() => setIsEditable(true)} />
+                        <EditIcon
+                          className="Edit_icon"
+                          onClick={() => setIsEditable(true)}
+                        />
                       )}
                     </IconButton>
                   </Box>
-                  <Box> Note : {dialogContent?.notes.amount_note}</Box>
-                  <Box>date : {dialogContent?.dates.amount_note}</Box>
+                  <Box className="bottom_content">
+                    <span> Note : {dialogContent?.notes.amount_note}</span>
+                    <span>Date : {dialogContent?.dates.amount_note}</span>
+                  </Box>
                 </Box>
               </DialogContent>
               <DialogActions>
@@ -241,6 +249,7 @@ export default function HomePage() {
             </Dialog>
 
             <Dialog
+              className="popup_2"
               open={isShownExpense}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
@@ -266,8 +275,16 @@ export default function HomePage() {
                       )}
                     </IconButton>
                   </Box>
-                  <Box> Note : {dialogContent?.notes.expense_note}</Box>
-                  <Box>date : {dialogContent?.dates.expense_note}</Box>
+                  <Box className="bottom_content">
+                    <p>
+                      <span className="commo_he"> Note :</span>
+                      <span>{dialogContent?.notes.expense_note}</span>
+                    </p>
+                    <p>
+                      <span className="commo_he">Date : </span>
+                      <span>{dialogContent?.dates.expense_note}</span>
+                    </p>
+                  </Box>
                 </Box>
               </DialogContent>
               <DialogActions>
