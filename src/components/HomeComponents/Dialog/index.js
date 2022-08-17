@@ -23,76 +23,69 @@ const Tabledialog = ({
 }) => {
   return (
     <>
-      <Dialog
-        className="popup_1"
-        open={isShownAmount}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+      <Box className="dilogcus dilogcushide">
         <TableDialogStyle>
-          <DialogContent className="popup_1_content">
-            <Box className="dialogcontent">
-              <Box className="amount_content">
-                <h3>Amount :</h3>
-                <div className="content-cp">
-                  <TextField
-                    onChange={(e) => setAmount(+e.target.value)}
-                    defaultValue={
-                      dialogType === "amount"
-                        ? dialogContent?.amount_received
-                        : dialogContent?.expenses
-                    }
-                    disabled={isEditable ? false : true}
-                  />
-                  <IconButton>
-                    {isEditable ? (
-                      <DoneIcon
-                        className="done_Icon"
-                        onClick={() =>
-                          handleEditValues(
-                            dialogContent?.id,
-                            dialogType === "amount" ? "total_amount" : "expense"
-                          )
-                        }
-                      />
-                    ) : (
-                      <EditIcon
-                        className="Edit_icon"
-                        onClick={() => setIsEditable(true)}
-                      />
-                    )}
-                  </IconButton>
-                </div>
-              </Box>
-              <Box className="bottom_content">
-                <span>
-                  {" "}
-                  Note :{" "}
-                  {dialogType === "amount"
-                    ? dialogContent?.notes.amount_note
-                    : dialogContent?.notes.expense_note}
-                </span>
-                <span>
-                  Date :{" "}
-                  {dialogType === "amount"
-                    ? dialogContent?.dates.amount_note
-                    : dialogContent?.dates.expense_note}
-                </span>
-              </Box>
+          <Box className="dialogcontent">
+            <Box className="amount_content">
+              <h3>Amount :</h3>
+              <div className="content-cp">
+                <TextField
+                  onChange={(e) => setAmount(+e.target.value)}
+                  defaultValue={
+                    dialogType === "amount"
+                      ? dialogContent?.amount_received
+                      : dialogContent?.expenses
+                  }
+                  disabled={isEditable ? false : true}
+                />
+                <IconButton>
+                  {isEditable ? (
+                    <DoneIcon
+                      className="done_Icon"
+                      onClick={() =>
+                        handleEditValues(
+                          dialogContent?.id,
+                          dialogType === "amount" ? "total_amount" : "expense"
+                        )
+                      }
+                    />
+                  ) : (
+                    <EditIcon
+                      className="Edit_icon"
+                      onClick={() => setIsEditable(true)}
+                    />
+                  )}
+                </IconButton>
+              </div>
             </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setIsShownAmount(false);
-                setIsEditable(false);
-              }}
-            >
-              Close
-            </Button>
-          </DialogActions>
+            <Box className="bottom_content">
+              <span>
+                {" "}
+                Note :{" "}
+                {dialogType === "amount"
+                  ? dialogContent?.notes.amount_note
+                  : dialogContent?.notes.expense_note}
+              </span>
+              <span>
+                Date :{" "}
+                {dialogType === "amount"
+                  ? dialogContent?.dates.amount_note
+                  : dialogContent?.dates.expense_note}
+              </span>
+            </Box>
+          </Box>
+
+          <Button
+            onClick={() => {
+              setIsShownAmount(false);
+              setIsEditable(false);
+            }}
+          >
+            Close
+          </Button>
+
         </TableDialogStyle>
-      </Dialog>
+      </Box>
     </>
   );
 };
