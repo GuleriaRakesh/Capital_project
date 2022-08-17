@@ -3,24 +3,15 @@ import HomeStyles from "./Home.style";
 import {
   AppBar,
   Box,
-  Button,
   createTheme,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
   Link,
-  SelectChangeEvent,
-  TextField,
   ThemeProvider,
   Toolbar,
 } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import EditIcon from "@mui/icons-material/Edit";
-import DoneIcon from "@mui/icons-material/Done";
-import { display } from "@mui/system";
+import "../Common.css";
+import Tabledialog from "./Dialog";
+
 interface State {
   amount: string;
   expenses: string;
@@ -102,7 +93,7 @@ export default function HomePage() {
     },
   ]);
   const [isShownAmount, setIsShownAmount] = useState<boolean>(false);
-  const [isShownExpense, setIsShownExpense] = useState<boolean>(false);
+  const [dialogType, setDialogType] = useState<string>("");
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(0);
   const [dialogContent, setDialogContent] = useState<any>();
@@ -171,8 +162,9 @@ export default function HomePage() {
                   <Box
                     sx={{ color: "#805ad8" }}
                     onMouseOver={() => {
-                      setIsShownAmount(true);
                       setDialogContent(params.row);
+                      setDialogType("amount");
+                      setIsShownAmount(true);
                     }}
                   >
                     {params.row.amount_received}
@@ -183,8 +175,9 @@ export default function HomePage() {
                   <Box
                     sx={{ color: "#d55ad8" }}
                     onMouseOver={() => {
-                      setIsShownAmount(true);
                       setDialogContent(params.row);
+                      setDialogType("expenses");
+                      setIsShownAmount(true);
                     }}
                   >
                     {params.row.expenses}
@@ -199,105 +192,17 @@ export default function HomePage() {
                 </Box>
               </Box>
             </Box>
-            <Dialog
-              className="popup_1"
-              open={isShownAmount}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogContent className="popup_1_content">
-                <Box className="dialogcontent">
-                  <Box className="amount_content">
-                    Amount :
-                    <TextField
-                      onChange={(e) => setAmount(+e.target.value)}
-                      defaultValue={dialogContent?.amount_received}
-                      disabled={isEditable ? false : true}
-                    />
-                    <IconButton>
-                      {isEditable ? (
-                        <DoneIcon
-                          className="done_Icon"
-                          onClick={() =>
-                            handleEditValues(dialogContent?.id, "total_amount")
-                          }
-                        />
-                      ) : (
-                        <EditIcon
-                          className="Edit_icon"
-                          onClick={() => setIsEditable(true)}
-                        />
-                      )}
-                    </IconButton>
-                  </Box>
-                  <Box className="bottom_content">
-                    <span> Note : {dialogContent?.notes.amount_note}</span>
-                    <span>Date : {dialogContent?.dates.amount_note}</span>
-                  </Box>
-                </Box>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    setIsShownAmount(false);
-                    setIsEditable(false);
-                  }}
-                >
-                  Close
-                </Button>
-              </DialogActions>
-            </Dialog>
 
-            <Dialog
-              className="popup_2"
-              open={isShownExpense}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogContent>
-                <Box>
-                  <Box>
-                    Amount :
-                    <TextField
-                      onChange={(e) => setAmount(+e.target.value)}
-                      defaultValue={dialogContent?.expenses}
-                      disabled={isEditable ? false : true}
-                    />
-                    <IconButton>
-                      {isEditable ? (
-                        <DoneIcon
-                          onClick={() =>
-                            handleEditValues(dialogContent?.id, "expense")
-                          }
-                        />
-                      ) : (
-                        <EditIcon onClick={() => setIsEditable(true)} />
-                      )}
-                    </IconButton>
-                  </Box>
-                  <Box className="bottom_content">
-                    <p>
-                      <span className="commo_he"> Note :</span>
-                      <span>{dialogContent?.notes.expense_note}</span>
-                    </p>
-                    <p>
-                      <span className="commo_he">Date : </span>
-                      <span>{dialogContent?.dates.expense_note}</span>
-                    </p>
-                  </Box>
-                </Box>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    setIsShownExpense(false);
-                    setIsEditable(false);
-                  }}
-                >
-                  Close
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <Tabledialog
+              isShownAmount={isShownAmount}
+              setAmount={setAmount}
+              setIsEditable={setIsEditable}
+              dialogType={dialogType}
+              setIsShownAmount={setIsShownAmount}
+              dialogContent={dialogContent}
+              handleEditValues={handleEditValues}
+              isEditable={isEditable}
+            />
           </>
         );
       },

@@ -1,0 +1,68 @@
+.popup_1 .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded {
+  border: none;
+  margin-bottom: 2rem;
+  -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+  box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+  border-radius: 5px;
+  width: 100%;
+}
+.popup_1 .amount_content {
+  flex-direction: column-reverse;
+}
+.amount_content .MuiFormControl-root.MuiTextField-root {
+  width: calc(100% - 40px);
+  margin: 10px auto;
+}
+.done_Icon {
+  color: var(--purple);
+}
+.popup_1 .MuiDialogActions-root button {
+  text-align: center;
+  background-color: var(--purple);
+  border: 1px solid var(--purple);
+  padding: 0.6rem 1.5rem;
+  color: #fff;
+  border-radius: 0.358rem;
+  transition: 0.3s ease all;
+}
+.popup_1 .MuiDialogActions-root button:hover {
+  background: #fff;
+  color: var(--purple);
+}
+.bottom_content span {
+  display: flex;
+  flex-wrap: wrap;
+}
+.bottom_content {
+  margin-top: 10px;
+}
+.amount_content h3 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--purple);
+}
+
+.content-cp {
+  display: flex;
+  align-items: center;
+}
+.content-cp svg.MuiSvgIcon-root {
+  color: var(--purple);
+}
+.bottom_content span:nth-child(1) {
+  border-bottom: 1px dotted #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.content-cp input:focus {
+  box-shadow: none;
+  outline: none;
+}
+.content-cp input {
+  border: 1px solid #f7f7f7;
+  padding: 10px;
+}
+body .Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--purple) !important;
+  border-width: 1px !important;
+}
